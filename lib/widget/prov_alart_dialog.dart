@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart'; // set
+import 'package:prozone/model/providers_model.dart' as model;
+
+class ProvAlertDialog extends StatelessWidget {
+  final model.Providers providers;
+  ProvAlertDialog(this.providers);
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Center(
+        child: Text(providers.name),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          providers?.images == null || providers.images.isEmpty
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Image.network(providers?.images?.first?.url),
+          Text(providers.name),
+          Text(providers.description),
+          Text(providers.address),
+          Text(providers.activeStatus),
+          //Text(providers.state),
+        ],
+      ),
+    );
+  }
+}
