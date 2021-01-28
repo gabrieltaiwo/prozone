@@ -13,7 +13,7 @@ Future<Map<String, dynamic>> setProvidersData(Map<String, dynamic> body) async {
     HttpHeaders.authorizationHeader:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjExNTYzNTg3LCJleHAiOjE2MTQxNTU1ODd9.KLKN7sJGyoz8y2tFHCiYbTkxRFqtJUuhSzaxtuDedco'
   });
-
+  print(response.statusCode);
   final Map<String, dynamic> responseData = json.decode(response.body);
   if (response.statusCode >= 200 && response.statusCode <= 300) {
     return {"success": true, "data": responseData};
@@ -36,6 +36,7 @@ Future<Map<String, dynamic>> uploadImage(filename, String providerId) async {
   request.fields['field'] = 'images';
 
   http.StreamedResponse response = await request.send();
+  print(response.statusCode);
 
   // final Map<String, dynamic> responseData = json.decode(response.reasonPhrase);
   // if (response.statusCode >= 200 && response.statusCode <= 300) {

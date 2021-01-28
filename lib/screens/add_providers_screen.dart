@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prozone/model/providers_model.dart' as model;
 import 'package:prozone/networking/service.dart' as networkService;
+import 'package:prozone/screens/providers_list_screen.dart';
 
 class AddProvidersScreen extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+    //double height = MediaQuery.of(context).size.height;
 
     return SafeArea(
       child: Scaffold(
@@ -228,6 +229,7 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
     } else {
       showSnackBar(context, response["data"]);
     }
+    print(response);
     setState(() {
       _loading = false;
       _step = 2;
@@ -256,6 +258,12 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
         await networkService.uploadImage(_selectedImage.path, _providerId);
     if (response["success"] == true) {
       showSnackBar(context, "Provider Image Saved");
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProvidersListScreen(),
+          ),
+          (route) => false);
     } else {
       showSnackBar(context, response["data"]);
     }

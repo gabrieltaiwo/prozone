@@ -46,22 +46,6 @@ class _ProvidersListScreenState extends State<ProvidersListScreen> {
                 builder: (context) => AddProvidersScreen(),
               ),
             );
-            //AddProvidersScreen();
-            // showModalBottomSheet (
-            //   context: context,
-            //   isScrollControlled: true,
-            //   builder: (context) =>
-            //       SingleChildScrollView (
-            //         child: Container (
-            //           padding: EdgeInsets.only (
-            //               bottom: MediaQuery
-            //                   .of (context)
-            //                   .viewInsets
-            //                   .bottom),
-            //           child: AddProvidersScreen (),
-            //         ),
-            //       ),
-            // );
           },
         ),
         body: _buildProviderList(),
@@ -77,7 +61,6 @@ class _ProvidersListScreenState extends State<ProvidersListScreen> {
           return FlatButton(
             child: ListTile(
               title: Text(providersList[index].name),
-              // subtitle: Text(providerslist[index].description),
             ),
             onPressed: () => showProvAlertDialog(context, index),
           );
@@ -95,10 +78,6 @@ class _ProvidersListScreenState extends State<ProvidersListScreen> {
       },
     );
   }
-
-  //{HttpHeaders.authorizationHeader: token},
-  //{"Content-Type": "application/json"}
-  //https://pro-zone.herokuapp.com/documentation/v1.0.0#/Provider/get_providers
 
   Future<List<model.Providers>> getProvidersData() async {
     const providerURL = "https://pro-zone.herokuapp.com/providers";
