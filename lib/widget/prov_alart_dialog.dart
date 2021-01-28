@@ -23,6 +23,7 @@ class ProvAlertDialog extends StatelessWidget {
           Text("address : ${providers.address}"),
           Text("status : ${providers.activeStatus}"),
           Text("rating : ${providers.rating.toString()}"),
+          Text("id : ${providers.id.toString()}"),
           //Text("provider type : ${providers.state.runtimeType}"),
         ],
       ),

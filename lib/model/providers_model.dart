@@ -1,13 +1,13 @@
+import 'dart:convert';
 // To parse this JSON data, do
+// final providers = providersFromJson(jsonString);
 //
-//     final providers = providersFromJson(jsonString);
 
-// import 'dart:convert';
-//import 'package:http/http.dart' as http;
+// import 'package:http/http.dart' as http;
 
-// Providers providersFromJson(String str) => Providers.fromJson(json.decode(str));
+Providers providersFromJson(String str) => Providers.fromJson(json.decode(str));
 
-// String providersToJson(Providers data) => json.encode(data.toJson());
+String providersToJson(Providers data) => json.encode(data.toJson());
 
 class Providers {
   Providers({
@@ -39,10 +39,13 @@ class Providers {
       description: json["description"] ?? "",
       rating: json["rating"] ?? 0,
       address: json["address"] ?? "",
-      images: List<Image>.from(json["images"].map((x) => Image.fromJson(x))),
+      //images: List<Image>.from(json["images"].map((x) => Image.fromJson(x))) ?? "",
       activeStatus: json["active_status"] ?? "",
-      providerType: json["provider_type"] == null ? null : ProviderType.fromJson(json["provider_type"]),
-      state: json["state"] == null ? null : ProviderType.fromJson(json["state"]),
+      providerType: json["provider_type"] == null
+          ? null
+          : ProviderType.fromJson(json["provider_type"]),
+      state:
+          json["state"] == null ? null : ProviderType.fromJson(json["state"]),
     );
   }
 

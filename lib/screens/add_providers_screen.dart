@@ -56,6 +56,8 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
     );
   }
 
+  String dropdownValue = 'Status';
+
   Widget _buildProviderForm(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
@@ -116,9 +118,33 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                   ),
                 ),
                 onSaved: _setProviderAddress,
+                validator: _validator,
                 keyboardType: TextInputType.streetAddress,
               ),
               SizedBox(height: 15),
+              // DropdownButton<String>(
+              //   value: dropdownValue,
+              //   icon: Icon(Icons.arrow_downward),
+              //   iconSize: 24,
+              //   elevation: 16,
+              //   style: TextStyle(color: Colors.deepPurple),
+              //   underline: Container(
+              //     height: 2,
+              //     color: Colors.deepPurpleAccent,
+              //   ),
+              //   onChanged: (String newValue) {
+              //     setState(() {
+              //       dropdownValue = newValue;
+              //     });
+              //   },
+              //   items: <String>['Status', 'Pending', 'Active', 'Inactive']
+              //       .map<DropdownMenuItem<String>>((String value) {
+              //     return DropdownMenuItem<String>(
+              //       value: value,
+              //       child: Text(value),
+              //     );
+              //   }).toList(),
+              //),
               TextFormField(
                 enabled: false,
                 controller: statusController,
@@ -132,7 +158,7 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                         color: Colors.blue, style: BorderStyle.solid),
                   ),
                 ),
-                onSaved: _setProviderAddress,
+                onSaved: _setActiveStatus,
                 validator: _validator,
                 keyboardType: TextInputType.streetAddress,
               ),
@@ -150,6 +176,7 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                             return;
                           }
                           _formKey.currentState.save();
+                          print(provider.toJson());
                           _saveProvider();
                         },
                       )
@@ -218,11 +245,17 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
     provider.address = providerAddress;
   }
 
+  _setActiveStatus(_) {
+    provider.activeStatus = statusController.text;
+  }
+
   void _saveProvider() async {
     setState(() => _loading = true);
-
+    // model.Providers response =
     Map<String, dynamic> response =
         await networkService.setProvidersData(provider.toJson());
+    print(response);
+
     if (response["success"] = true) {
       _providerId = response["data"]["id"].toString();
       showSnackBar(context, "Provider Details Saved");

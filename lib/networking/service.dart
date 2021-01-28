@@ -2,24 +2,34 @@ import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+//import 'package:prozone/model/providers_model.dart' as model;
+//import 'package:prozone/model/providers_model.dart';
+//import 'package:prozone/model/providers_model.dart';
 
 Future<Map<String, dynamic>> setProvidersData(Map<String, dynamic> body) async {
+//Future<model.Providers> setProvidersData(Map<String, dynamic> body) async {
   String requestURL = "https://pro-zone.herokuapp.com/providers";
   // const token =
   //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjExNTYzNjEzLCJleHAiOjE2MTQxNTU2MTN9.e5Df8V75KU44Hz4IG1ilKby0ptkJzX7hFcbX5XZ-EEI";
-  // body.putIfAbsent("active_status", () => "Pending");
+  body.putIfAbsent("active_status", () => "Pending");
   http.Response response =
       await http.post(requestURL, body: json.encode(body), headers: {
     HttpHeaders.authorizationHeader:
         'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjExNTYzNTg3LCJleHAiOjE2MTQxNTU1ODd9.KLKN7sJGyoz8y2tFHCiYbTkxRFqtJUuhSzaxtuDedco'
   });
-  print(response.statusCode);
   final Map<String, dynamic> responseData = json.decode(response.body);
+  print(response.statusCode);
   if (response.statusCode >= 200 && response.statusCode <= 300) {
     return {"success": true, "data": responseData};
   }
 
   return {"success": false, "data": responseData};
+  // if (response.statusCode >= 200 && response.statusCode <= 300) {
+  //   return {
+  //     "success": true, "data": responseData};
+  // }
+  //
+  // return {"success": false, "data": responseData};
 }
 
 Future<Map<String, dynamic>> uploadImage(filename, String providerId) async {
