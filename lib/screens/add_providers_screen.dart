@@ -77,6 +77,13 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                   ),
                 ),
                 onSaved: _setProviderName,
+                validator: _validator,
+                // validator: (value) {
+                //   if (value.isEmpty) {
+                //     return 'Please enter some text';
+                //   }
+                //   return null;
+                // },
                 keyboardType: TextInputType.text,
               ),
               SizedBox(height: 15),
@@ -91,6 +98,7 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                         borderSide: BorderSide(
                             color: Colors.blue, style: BorderStyle.solid))),
                 onSaved: _setProviderDescription,
+                validator: _validator,
                 keyboardType: TextInputType.text,
               ),
               SizedBox(height: 15),
@@ -124,6 +132,7 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                   ),
                 ),
                 onSaved: _setProviderAddress,
+                validator: _validator,
                 keyboardType: TextInputType.streetAddress,
               ),
               SizedBox(height: 15),
@@ -153,36 +162,47 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
   }
 
   Widget _buildProviderPreviewImage() {
-    return Column(
-      children: [
-        _selectedImage == null
-            ? FloatingActionButton(
-                child: Icon(
-                  Icons.add,
-                  color: Colors.white,
-                ),
-                onPressed: () => _selectImage())
-            : Container(
-                width: 120.0,
-                height: 120.0,
-                child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: Image.file(
-                      _selectedImage,
-                      fit: BoxFit.cover,
-                    ))),
-        Center(
-            child: _loading == false
-                ? MaterialButton(
-                    color: Theme.of(context).accentColor,
-                    child: Text(
-                      "Submit Provider Image",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    onPressed: _uploadImage)
-                : Center(child: CircularProgressIndicator())),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          _selectedImage == null
+              ? FloatingActionButton(
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                  onPressed: () => _selectImage())
+              : Container(
+                  width: 120.0,
+                  height: 120.0,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100.0),
+                      child: Image.file(
+                        _selectedImage,
+                        fit: BoxFit.cover,
+                      ))),
+          SizedBox(height: 15.0),
+          Center(
+              child: _loading == false
+                  ? MaterialButton(
+                      color: Theme.of(context).accentColor,
+                      child: Text(
+                        "Submit Provider Image",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: _uploadImage)
+                  : Center(child: CircularProgressIndicator())),
+        ],
+      ),
     );
+  }
+
+  String _validator(value) {
+    if (value.isEmpty) {
+      return 'Please enter provider details';
+    }
+    return null;
   }
 
   _setProviderName(String providerName) {

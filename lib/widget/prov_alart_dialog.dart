@@ -18,11 +18,12 @@ class ProvAlertDialog extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 )
               : Image.network(providers?.images?.first?.url),
-          Text(providers.name),
-          Text(providers.description),
-          Text(providers.address),
-          Text(providers.activeStatus),
-          //Text(providers.state),
+          Text("name : ${providers.name}"),
+          Text("description : ${providers.description}"),
+          Text("address : ${providers.address}"),
+          Text("status : ${providers.activeStatus}"),
+          Text("rating : ${providers.rating.toString()}"),
+          //Text("provider type : ${providers.state.runtimeType}"),
         ],
       ),
     );
