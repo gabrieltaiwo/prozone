@@ -32,10 +32,12 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
 
   String _providerId;
 
+  String _activeStatus;
+
   @override
   void initState() {
     provider = model.Providers();
-    provider.activeStatus = statusController.text = "Pending";
+    // provider.activeStatus = statusController.text = "Pending";
     super.initState();
   }
 
@@ -55,8 +57,6 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
       ),
     );
   }
-
-  String dropdownValue = 'Status';
 
   Widget _buildProviderForm(BuildContext context) {
     return SingleChildScrollView(
@@ -81,12 +81,6 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                 ),
                 onSaved: _setProviderName,
                 validator: _validator,
-                // validator: (value) {
-                //   if (value.isEmpty) {
-                //     return 'Please enter some text';
-                //   }
-                //   return null;
-                // },
                 keyboardType: TextInputType.text,
               ),
               SizedBox(height: 15),
@@ -122,46 +116,40 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                 keyboardType: TextInputType.streetAddress,
               ),
               SizedBox(height: 15),
-              // DropdownButton<String>(
-              //   value: dropdownValue,
-              //   icon: Icon(Icons.arrow_downward),
-              //   iconSize: 24,
-              //   elevation: 16,
-              //   style: TextStyle(color: Colors.deepPurple),
-              //   underline: Container(
-              //     height: 2,
-              //     color: Colors.deepPurpleAccent,
-              //   ),
-              //   onChanged: (String newValue) {
-              //     setState(() {
-              //       dropdownValue = newValue;
-              //     });
-              //   },
-              //   items: <String>['Status', 'Pending', 'Active', 'Inactive']
-              //       .map<DropdownMenuItem<String>>((String value) {
-              //     return DropdownMenuItem<String>(
-              //       value: value,
-              //       child: Text(value),
-              //     );
-              //   }).toList(),
-              //),
-              TextFormField(
-                enabled: false,
-                controller: statusController,
-                decoration: InputDecoration(
-                  labelText: 'Active Status',
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(4.0),
-                    ),
-                    borderSide: BorderSide(
-                        color: Colors.blue, style: BorderStyle.solid),
-                  ),
+              DropdownButton<String>(
+                hint: Text("Status"),
+                isExpanded: true,
+                value: _activeStatus,
+                iconSize: 24,
+                elevation: 16,
+                underline: Container(
+                  height: 2,
+                  color: Colors.blue[400],
                 ),
-                onSaved: _setActiveStatus,
-                validator: _validator,
-                keyboardType: TextInputType.streetAddress,
+                onChanged: _setActiveStatus,
+                items: <String>['Pending', 'Active', 'Inactive']
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
+              // TextFormField(
+              //   enabled: false,
+              //   controller: statusController,
+              //   decoration: InputDecoration(
+              //     labelText: 'Active Status',
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.all(
+              //         Radius.circular(4.0),
+              //       ),
+              //       borderSide: BorderSide(color: Colors.blue, style: BorderStyle.solid),
+              //     ),
+              //   ),
+              //   onSaved: _setActiveStatus,
+              //   keyboardType: TextInputType.streetAddress,
+              // ),
               SizedBox(height: 15),
               Center(
                 child: _loading == false
@@ -219,18 +207,12 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
                         "Submit Provider Image",
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: _uploadImage)
+                      onPressed: _uploadImage,
+                    )
                   : Center(child: CircularProgressIndicator())),
         ],
       ),
     );
-  }
-
-  String _validator(value) {
-    if (value.isEmpty) {
-      return 'Please enter provider details';
-    }
-    return null;
   }
 
   _setProviderName(String providerName) {
@@ -245,24 +227,31 @@ class _AddProvidersScreenState extends State<AddProvidersScreen> {
     provider.address = providerAddress;
   }
 
-  _setActiveStatus(_) {
-    provider.activeStatus = statusController.text;
+  void _setActiveStatus(String status) {
+    setState(() {
+      _activeStatus = status;
+      provider.activeStatus = status;
+    });
+  }
+
+  String _validator(value) {
+    if (value.isEmpty) {
+      return 'Please enter provider details';
+    }
+    return null;
   }
 
   void _saveProvider() async {
     setState(() => _loading = true);
-    // model.Providers response =
+
     Map<String, dynamic> response =
         await networkService.setProvidersData(provider.toJson());
-    print(response);
-
     if (response["success"] = true) {
       _providerId = response["data"]["id"].toString();
       showSnackBar(context, "Provider Details Saved");
     } else {
       showSnackBar(context, response["data"]);
     }
-    print(response);
     setState(() {
       _loading = false;
       _step = 2;
